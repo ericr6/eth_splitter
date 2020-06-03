@@ -1,0 +1,6 @@
+node_modules/*
+node_modules
+eth_splitter.iml
+.idea/
+build/
+package-lock.json
