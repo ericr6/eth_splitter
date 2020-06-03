@@ -23,8 +23,8 @@ contract Splitter is Pausable{
         require( msg.value > 0,"to Split nothing, you dont need me.");
 
         uint _val = SafeMath.div(msg.value,2);
-        balances[receiverA] = SafeMath.add(balances[receiverA],_val);
-        balances[receiverB] = SafeMath.add(balances[receiverB],_val);
+        balances[receiverA] = SafeMath.add(balances[receiverA], _val);
+        balances[receiverB] = SafeMath.add(balances[receiverB], _val);
         emit SplitongoingEvent(msg.sender, msg.value, receiverA, receiverB);
         if (SafeMath.mod(msg.value, 2) != 0){
           balances[msg.sender] = SafeMath.add(balances[msg.sender], 1);
