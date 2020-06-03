@@ -8,7 +8,7 @@ pragma solidity ^0.5.0;
  * from https://github.com/ConsenSys/openzeppelin-solidity/blob/master/contracts/ownership/Ownable.sol
  */
 contract Ownable {
-  address public owner;
+  address private owner;
 
 
   event OwnershipRenounced(address indexed previousOwner);
@@ -22,7 +22,7 @@ contract Ownable {
    * @dev The Ownable constructor sets the original `owner` of the contract to the sender
    * account.
    */
-  constructor() public {l 2
+  constructor() public {
     owner = msg.sender;
   }
 
@@ -30,7 +30,7 @@ contract Ownable {
    * @dev Throws if called by any account other than the owner.
    */
   modifier onlyOwner() {
-    require(msg.sender == owner);
+    require(msg.sender == owner,"caller is not the sender");
     _;
   }
 
@@ -40,15 +40,7 @@ contract Ownable {
    */
   function transferOwnership(address newOwner) public onlyOwner {
     require(newOwner != address(0));
-    emit OwnershipTransferred(owner, newOwner);
     owner = newOwner;
-  }
-
-  /**
-   * @dev Allows the current owner to relinquish control of the contract.
-   */
-  function renounceOwnership() public onlyOwner {
-    emit OwnershipRenounced(owner);
-    owner = address(0);
+    emit OwnershipTransferred(owner, newOwner);
   }
 }
