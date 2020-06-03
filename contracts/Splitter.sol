@@ -11,12 +11,12 @@ import "./Pausable.sol";
 
 contract Splitter is Pausable{
 
-   event SplitongoingEvent(address sender, uint amount, address receiverA, address receiverB);
-   event WithdrawEvent(address sender, uint amount);
+   event SplitongoingEvent(address indexed sender, uint amount, address indexed receiverA, address indexed receiverB);
+   event WithdrawEvent(address indexed sender, uint amount);
 
    mapping(address => uint) public balances;
    
-   function split(address receiverA, address receiverB) public whenNotPaused payable {
+   function split(address receiverA, address receiverB) public whenResume payable {
         require( receiverA != address(0x0) && receiverB != address(0x0), "invalid receiver address");
         require( receiverA != receiverB, "receivers must be different");
         require( receiverA != msg.sender && receiverB != msg.sender, "sender cannot be recipient");
@@ -33,12 +33,12 @@ contract Splitter is Pausable{
    }
     
     // Withdraw function.
-    function withdraw() public whenNotPaused {
+    function withdraw() public whenResume {
         require(balances[msg.sender] >0);
         uint _val = balances[msg.sender];
         balances[msg.sender] = 0;
-        msg.sender.transfer(_val);
         emit WithdrawEvent(msg.sender, _val);
+        msg.sender.transfer(_val);
     }
 
 }
