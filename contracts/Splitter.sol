@@ -1,9 +1,12 @@
 pragma solidity >=0.4.22 <0.7.0;
 
 /**
- * @title Owner
- * @dev Set & change owner
+ * Eric Rodriguez
+ * er@iex.ec
  */
+
+import "@openzeppelin/contracts/math/SafeMath.sol";
+
 contract Splitter {
 
    event SplitongoingEvent(address sender, uint amount, address receiverA, address receiverB);
@@ -18,12 +21,15 @@ contract Splitter {
         require( msg.value > 0,"to Split nothing, you dont need me.");
 
         //roundo-off error not adressed.  
-        uint _val = msg.value/2;
-        balances[receiverA] += _val;
-        balances[receiverB] += _val;
-
+        uint _val = SafeMath.div(msg.value,2);
+        balances[receiverA] = SafeMath.add(balances[receiverA],_val);
+        balances[receiverB] = SafeMath.add(balances[receiverB],_val);
         emit SplitongoingEvent(msg.sender, msg.value, receiverA, receiverB);
-    }
+        if (SafeMath.mod(msg.value, 2) != 0){
+          balances[msg.sender] = SafeMath.add(balances[msg.sender], 1);
+          // Send an event?
+        }
+   }
     
     // Withdraw function.
     function withdraw() public {
