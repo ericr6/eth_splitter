@@ -10,16 +10,16 @@ import "./Ownable.sol";
  */
 contract Pausable is Ownable {
   event Pause();
-  event Unpause();
+  event Resume();
 
-  bool public paused = false;
+  bool private paused = false;
 
 
   /**
    * @dev Modifier to make a function callable only when the contract is not paused.
    */
-  modifier whenNotPaused() {
-    require(!paused);
+  modifier whenResume() {
+    require(!paused, "paused must be false");
     _;
   }
 
@@ -27,23 +27,23 @@ contract Pausable is Ownable {
    * @dev Modifier to make a function callable only when the contract is paused.
    */
   modifier whenPaused() {
-    require(paused);
+    require(paused, "paused is not true");
     _;
   }
 
   /**
    * @dev called by the owner to pause, triggers stopped state
    */
-  function pause() onlyOwner whenNotPaused public {
+  function pause() onlyOwner whenResume public {
     paused = true;
     emit Pause();
   }
 
   /**
-   * @dev called by the owner to unpause, returns to normal state
+   * @dev called by the owner to resume, returns to normal state
    */
-  function unpause() onlyOwner whenPaused public {
+  function resume() onlyOwner whenPaused public {
     paused = false;
-    emit Unpause();
+    emit Resume();
   }
 }
