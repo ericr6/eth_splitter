@@ -6,21 +6,22 @@ pragma solidity >=0.4.22 <0.7.0;
  */
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "./Ownable.sol";
+import "./Pausable.sol";
 
-contract Splitter {
+contract Splitter is Pausable{
 
    event SplitongoingEvent(address sender, uint amount, address receiverA, address receiverB);
    event WithdrawEvent(address sender, uint amount);
 
    mapping(address => uint) public balances;
    
-   function split(address receiverA, address receiverB) public payable {
+   function split(address receiverA, address receiverB) public whenNotPaused payable {
         require( receiverA != address(0x0) && receiverB != address(0x0), "invalid receiver address");
         require( receiverA != receiverB, "receivers must be different");
         require( receiverA != msg.sender && receiverB != msg.sender, "sender cannot be recipient");
         require( msg.value > 0,"to Split nothing, you dont need me.");
 
-        //roundo-off error not adressed.  
         uint _val = SafeMath.div(msg.value,2);
         balances[receiverA] = SafeMath.add(balances[receiverA],_val);
         balances[receiverB] = SafeMath.add(balances[receiverB],_val);
@@ -32,7 +33,7 @@ contract Splitter {
    }
     
     // Withdraw function.
-    function withdraw() public {
+    function withdraw() public whenNotPaused {
         require(balances[msg.sender] >0);
         uint _val = balances[msg.sender];
         balances[msg.sender] = 0;
@@ -40,7 +41,4 @@ contract Splitter {
         emit WithdrawEvent(msg.sender, _val);
     }
 
-    function getBalance() public view returns  (uint) {
-        return (balances[msg.sender]);
-    }
 }
