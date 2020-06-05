@@ -26,9 +26,9 @@ contract Splitter is Pausable{
         balances[receiverA] = SafeMath.add(balances[receiverA], _val);
         balances[receiverB] = SafeMath.add(balances[receiverB], _val);
         emit SplitongoingEvent(msg.sender, msg.value, receiverA, receiverB);
-        if (SafeMath.mod(msg.value, 2) != 0){
-          balances[msg.sender] = SafeMath.add(balances[msg.sender], 1);
-          // Send an event?
+        uint _back = SafeMath.mod(msg.value, 2);
+        if (_back != 0){
+          balances[msg.sender] = SafeMath.add(balances[msg.sender], _back);
         }
    }
     
