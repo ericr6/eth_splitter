@@ -17,4 +17,4 @@ Front end
 
 https://codesandbox.io/s/splitter-qscv0
 
-get a issue with metamask and active wallet detection
+see issues 
