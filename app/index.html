@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Eth Splitter</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div id="app">
+      <h1>
+        ETH Splitter
+      </h1>
+      <div class="spacer" />
+      <div id="login-helper">
+        Please connect with Metamask
+      </div>
+      <div id="content" hidden>
+        <div id="info">
+            <p> Alice: 0xd03ea8624C8C5987235048901fB614fDcA89b117 </p>
+            <p> Bob:   0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0 </p>
+            <p> Carol: 0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b </p>
+        </div>
+        <div class="row" id="Alice_wallet"></div>
+        <div class="row" id="Bob_wallet"></div>
+        <div class="row" id="Carol_wallet"></div>
+        <div class="row" border= >
+          <div class="row">
+            <label for="fname">ReceiverA:</label>
+            <input type="text" id="recv1" name="recv1" />
+          </div>
+          <div class="row">
+            <label for="fname">ReceiverB:</label>
+            <input type="text" id="recv2" name="recv2" />
+          </div>
+          <div class="row">
+            <label for="fname">Amount:</label>
+            <input type="text" id="Amount" name="amount" />
+          </div>
+          <div class="row" id="user-address"></div>
+          <button id="split">
+            Split
+          </button>
+        </div>
+        <div class="spacer" />
+        <div class="row">
+          <button id="withdraw">
+            Withdraw
+          </button>
+        </div>
+        <div class="row">
+            <button id="update">
+              update
+            </button>
+          </div>
+        <div id="events">
+          <p> Events: </p>
+        </div>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
