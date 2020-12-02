@@ -11,3 +11,10 @@ then in eth_splitter directory
 truffle test
 ```
 to run unitary tests
+
+
+Front end 
+
+https://codesandbox.io/s/splitter-qscv0
+
+see issues 
