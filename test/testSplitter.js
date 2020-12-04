@@ -8,7 +8,7 @@ const NULL = "0x0000000000000000000000000000000000000000";
 
 contract('Splitter', (accounts) => {
 
-  const [bob, carol, alice] = accounts;
+  const [bob, carol, alice, jack] = accounts;
   let splitterInstance;
 
   beforeEach("deploy Splitter", async function()
@@ -41,9 +41,13 @@ contract('Splitter', (accounts) => {
   it('accept two successive split calls', async () => {
 
     const txObj = await  splitterInstance.split(bob, carol, { from: alice , value: 4 });
-    const txObj2 = await  splitterInstance.split(bob, carol, { from: alice , value: 8 });
+    const txObj2 = await  splitterInstance.split(jack, carol, { from: alice , value: 8 });
     const carolBalance = (await splitterInstance.balances.call(carol, {from: carol})).toString();
-    assert.strictEqual(carolBalance, "6", "not sent correctly to the receiver");
+    const bobBalance = (await splitterInstance.balances.call(bob, {from: carol})).toString();
+    const jackBalance = (await splitterInstance.balances.call(jack, {from: jack})).toString();
+    assert.strictEqual(carolBalance, "6", "not sent correctly to the receiver carol");
+    assert.strictEqual(jackBalance, "4", "not sent correctly to the receiver jack");
+    assert.strictEqual(bobBalance, "2", "not sent correctly to the receiver bob ");
   });
 
   it('correctly withdrawn inside the contract, odd case ', async () => {
