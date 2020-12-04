@@ -52,8 +52,6 @@ contract('Splitter', (accounts) => {
 
   it('correctly withdrawn inside the contract, odd case ', async () => {
     const txObj = await  splitterInstance.split(bob, carol, { from: alice , value: 4 });
-    const bobBalance = (await splitterInstance.balances.call(bob, {from: bob})).toString();
-    assert.strictEqual(bobBalance, "2", "not sent correctly to the receiver");
     const txObj1 = await  splitterInstance.withdraw({from: bob});
     truffleAssert.eventEmitted(txObj1, 'WithdrawEvent', (ev) => { return ev.sender === bob && ev.amount.toString() === "2" ;});
     const bobBalance2 = (await splitterInstance.balances.call(bob, {from: bob})).toString();
