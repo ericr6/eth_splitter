@@ -15,7 +15,7 @@ contract Splitter is Pausable{
    event WithdrawEvent(address indexed sender, uint amount);
 
    mapping(address => uint) public balances;
-   
+
    function split(address receiverA, address receiverB) public whenResume payable {
         require( receiverA != address(0x0) && receiverB != address(0x0), "invalid receiver address");
         require( receiverA != receiverB, "receivers must be different");
@@ -31,16 +31,17 @@ contract Splitter is Pausable{
           balances[msg.sender] = SafeMath.add(balances[msg.sender], _back);
         }
    }
-    
+
     // Withdraw function.
     function withdraw() public whenResume returns (bool ret) {
-        require(balances[msg.sender] > 0);
-        uint _val = balances[msg.sender];
+        uint sender_balance = balances[msg.sender];
+        require(sender_balance > 0);
+        uint _val = sender_balance;
         balances[msg.sender] = 0;
         emit WithdrawEvent(msg.sender, _val);
         (bool _ret,) = msg.sender.call.value(_val)("");
         require(_ret, "Withdraw failed");
-        return true;
+//        return true;
     }
 
 }
