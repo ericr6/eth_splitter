@@ -84,10 +84,10 @@ contract('Splitter', (accounts) => {
 
   it('a receiver should withdraw correctly, check outside contract, gas included', async () => {
 
-    const bobBalance = new web3.utils.BN(await web3.eth.getBalance(bob));
+    const bobBalance = new BN(await web3.eth.getBalance(bob));
     const txObj_split = await  splitterInstance.split(bob, carol, { from: alice , value: 4 });
     const txObj_withdraw = await  splitterInstance.withdraw({from: bob});
-    const bobBalancePost = new web3.utils.BN(await web3.eth.getBalance(bob));
+    const bobBalancePost = new BN(await web3.eth.getBalance(bob));
     const gasUsed = txObj_withdraw.receipt.gasUsed;
     const _tx = await web3.eth.getTransaction(txObj_withdraw.tx);
     const gasPrice = _tx.gasPrice;
@@ -98,14 +98,14 @@ contract('Splitter', (accounts) => {
 
   it('a receiver should withdraw correctly, check outside contract, gas included, alternative test', async () => {
 
-      const bobBalanceBefore = new web3.utils.BN(await web3.eth.getBalance(bob));
       const txObj_split = await splitterInstance.split(bob, carol, { from: alice , value: 4 });
+      const bobBalanceBefore = new BN(await web3.eth.getBalance(bob));
       const txObj_withdraw = await splitterInstance.withdraw({from: bob});
-      const bobBalanceAfter = new web3.utils.BN(await web3.eth.getBalance(bob));
+      const bobBalanceAfter = new BN(await web3.eth.getBalance(bob));
       const _tx = await web3.eth.getTransaction(txObj_withdraw.tx);
       const gasUsed = txObj_withdraw.receipt.gasUsed;
       const gasPrice = _tx.gasPrice;
-      const withdrawCost = gasUsed * gasPrice ;
+      const withdrawCost = new BN(gasUsed) * new BN(gasPrice) ;
       const rhs = new BN(bobBalanceBefore).add(new BN("2")).sub(new BN(withdrawCost)).toString(10);
       assert.equal(new BN(bobBalanceAfter), rhs, "not correctly withdrawn, gas checked, alternative test");
     });
