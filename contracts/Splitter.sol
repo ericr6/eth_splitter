@@ -39,9 +39,8 @@ contract Splitter is Pausable{
         uint _val = sender_balance;
         balances[msg.sender] = 0;
         emit WithdrawEvent(msg.sender, _val);
-        (bool _ret,) = msg.sender.call.value(_val)("");
-        require(_ret, "Withdraw failed");
-//        return true;
+        (ret,) = msg.sender.call.value(_val)("");
+        require(ret, "Withdraw failed");
     }
 
 }
