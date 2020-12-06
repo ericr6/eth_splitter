@@ -2,7 +2,7 @@ const Splitter = artifacts.require("Splitter");
 const Promise = require("bluebird");
 Promise.promisifyAll(web3.eth, { suffix: "Promise" });
 const truffleAssert = require('truffle-assertions');
-const BN = require('bn.js');
+var BN = web3.utils.BN
 const NULL = "0x0000000000000000000000000000000000000000";
 
 
