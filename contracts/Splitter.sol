@@ -34,12 +34,11 @@ contract Splitter is Pausable{
 
     // Withdraw function.
     function withdraw() public whenResume returns (bool ret) {
-        uint sender_balance = balances[msg.sender];
-        require(sender_balance > 0);
-        uint _val = sender_balance;
+        uint _sender_balance = balances[msg.sender];
+        require(_sender_balance > 0);
         balances[msg.sender] = 0;
-        emit WithdrawEvent(msg.sender, _val);
-        (ret,) = msg.sender.call.value(_val)("");
+        emit WithdrawEvent(msg.sender, _sender_balance);
+        (ret,) = msg.sender.call.value(_sender_balance)("");
         require(ret, "Withdraw failed");
     }
 
