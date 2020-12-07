@@ -50,17 +50,22 @@ contract('Splitter', (accounts) => {
     assert.strictEqual(bobBalance, "2", "not sent correctly to the receiver bob ");
   });
 
-  it('correctly withdrawn inside the contract, odd case ', async () => {
+  it('correctly split test with 2 operations', async () => {
+    const txObj0 = await  splitterInstance.split(bob, jack, { from: alice , value: 1 });
     const bobBalance1 = (await splitterInstance.balances.call(bob, {from: bob})).toString();
     const txObj = await  splitterInstance.split(bob, carol, { from: alice , value: 4 });
     const bobBalance2 = (await splitterInstance.balances.call(bob, {from: bob})).toString();
-    const txObj1 = await  splitterInstance.withdraw({from: bob});
-    truffleAssert.eventEmitted(txObj1, 'WithdrawEvent', (ev) => { return ev.sender === bob && ev.amount.toString() === "2" ;});
-    const bobBalance3 = (await splitterInstance.balances.call(bob, {from: bob})).toString();
-    //const bobBalance2 = new web3.utils.BN((await splitterInstance.balances.call(bob, {from: bob})));
-    assert.equal( new BN(bobBalance2).sub(new BN(bobBalance1)), 2, "check during the split function");
-    assert.strictEqual(bobBalance3, "0", "check during the withdraw function");
+    assert.equal( new BN(bobBalance2).sub(new BN(bobBalance1)), 2, "check during the split f");
   });
+
+  it('correctly withdrawn inside the contract, check event and withdraw call, odd case ', async () => {
+    const txObj = await  splitterInstance.split(bob, carol, { from: alice , value: 12 });
+    const txObj1 = await  splitterInstance.withdraw({from: bob});
+    truffleAssert.eventEmitted(txObj1, 'WithdrawEvent', (ev) => { return ev.sender === bob && ev.amount.toString() === "6" ;});
+    const bobBalance3 = (await splitterInstance.balances.call(bob, {from: bob})).toString();
+    assert.strictEqual(bobBalance3, "0", "withdraw check");
+  });
+
 
   it('correctly withdrawn inside the contract, even case', async () => {
 
